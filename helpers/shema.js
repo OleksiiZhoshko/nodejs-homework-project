@@ -6,10 +6,14 @@ const addSchema = Joi.object({
 	phone: Joi.string().required(),
 });
 
-const changeSchema = Joi.object({
-	name: Joi.string(),
-	email: Joi.string(),
-	phone: Joi.string(),
-}).min(1);
+const changeSchema = (data) => {
+  const schema = Joi.object({
+    name: Joi.string(),
+    email: Joi.string(),
+    phone: Joi.string()
+  });
+
+  return schema.validate(data);
+};
 
 module.exports = { addSchema, changeSchema };
