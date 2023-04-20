@@ -5,7 +5,7 @@ require("dotenv").config();
 const startServer = async () => {
   try {
     await connectToDB();
-    app.listen(process.env.PORT, (error) => {
+    app.listen(process.env.PORT || 3001, (error) => {
       if (error) {
         console.log("Server running error", error);
       }
