@@ -1,79 +1,34 @@
-const fs = require("fs/promises");
-const path = require("path");
-const contactsPath = path.join(__dirname, "./contacts.json");
-const { nanoid } = require("nanoid");
+const Contact = require("../database/shemaModels");
 
 const listContacts = async () => {
-  try {
-    const contacts = await fs.readFile(contactsPath, "utf8");
-    return JSON.parse(contacts);
-  } catch (error) {
-    console.error(error);
-  }
+  return await Contact.find();
 };
 
-const getContactById = async (contactId) => {
-  try {
-    const contacts = await listContacts();
-    const contact = contacts.find((contact) => contact.id === contactId);
-    return contact;
-  } catch (error) {
-    console.error(error);
-  }
+const getContactById = async (id) => {
+  return await Contact.findById(id);
 };
 
-const removeContact = async (contactId) => {
-  try {
-    const contacts = await listContacts();
-    const updatedContacts = contacts.filter(
-      (contact) => contact.id !== contactId
-    );
-    const updateFile = async (data) =>
-      await fs.writeFile(contactsPath, JSON.stringify(data), "utf-8");
-
-    await updateFile(updatedContacts);
-    return contacts.find((contact) => contact.id === contactId);
-  } catch (error) {
-    console.log(error);
-  }
+const removeContact = async (id) => {
+  return await Contact.findByIdAndDelete(id);
 };
 
 const addContact = async (body) => {
-  const { name, email, phone } = body;
-  try {
-    const contacts = await listContacts();
-    const newContact = { name, email, phone, id: nanoid(8) };
-    const newContacts = [...contacts, newContact];
-    await fs.writeFile(contactsPath, JSON.stringify(newContacts), "utf-8");
-    return newContact;
-  } catch (err) {
-    console.error(err);
-  }
+  return await new Contact(body).save();
 };
 
-const updateContact = async (contactId, body) => {
-  try {
-    const contacts = await listContacts();
-    const i = contacts.findIndex((contact) => contact.id === contactId);
-    if (i === -1) {
-      return null;
-    }
-    contacts[i] = { ...contacts[i], ...body };
+const updateContact = async (id, body) => {
+  return await Contact.findByIdAndUpdate(id, body, { new: true });
+};
 
-    const updateFile = async (data) =>
-      await fs.writeFile(contactsPath, JSON.stringify(data), "utf-8");
-
-    await updateFile(contacts);
-    return contacts[i];
-  } catch (error) {
-    console.log(error);
-  }
+const favoriteContact = async (id, body) => {
+  return await Contact.findByIdAndUpdate(id, body, { new: true });
 };
 
 module.exports = {
   listContacts,
   getContactById,
   removeContact,
-  addContact,
+  addContact,  
   updateContact,
+  favoriteContact,
 };
