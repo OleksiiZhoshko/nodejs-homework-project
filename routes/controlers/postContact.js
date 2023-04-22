@@ -6,7 +6,7 @@ const postContact = async (req, res, next) => {
     res.status(201).json(contact);
     next();
   } catch (error) {
-    return res.status(404).json({ message: "Not found" });
+    return res.status(400).json({ message: "missing required name field"});
   }
 }
 
