@@ -1,6 +1,6 @@
 const { removeContact } = require("../../models/contacts");
 
-const deleteContact = async (req, res, next) => {
+const deleteContact = async (req, res) => {
   const { contactId } = req.params;
   const contactToRemove = await removeContact(contactId);
   if (!contactToRemove) {
@@ -9,4 +9,4 @@ const deleteContact = async (req, res, next) => {
   return res.status(200).json({ message: "contact deleted" });
 }
 
-module.exports = {deleteContact}
+module.exports = { deleteContact };

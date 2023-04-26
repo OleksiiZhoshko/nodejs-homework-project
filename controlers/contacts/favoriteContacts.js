@@ -1,6 +1,6 @@
 const { favoriteContact } = require("../../models/contacts");
 
-const statusContact = async (req, res, __) => {
+const statusContact = async (req, res) => {
   const { contactId } = req.params;
   const body = req.body;
   const updatedContact = await favoriteContact(contactId, body);
