@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const { User } = require("../database/schemaModelUsers");
+const User = require("../database/schemaModelUsers");
 
 const { SECRET_KEY } = process.env;
 const authenticate = async (req, res, next) => {
