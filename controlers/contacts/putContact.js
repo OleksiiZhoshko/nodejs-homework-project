@@ -1,6 +1,6 @@
 const { updateContact } = require("../../models/contacts");
 
-const putContact = async (req, res, __) => {
+const putContact = async (req, res) => {
     const { contactId } = req.params;
   const body = req.body;
   if (!Object.values(body).length) {

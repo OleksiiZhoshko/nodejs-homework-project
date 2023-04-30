@@ -1,7 +1,7 @@
-const Contact = require("../database/shemaModels");
+const Contact = require("../database/shemaModelsContacts");
 
-const listContacts = async () => {
-  return await Contact.find();
+const listContacts = async (owner, _, options) => {
+  return await Contact.find(owner, _, options);
 };
 
 const getContactById = async (id) => {
