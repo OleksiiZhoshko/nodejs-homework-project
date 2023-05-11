@@ -1,23 +1,19 @@
 const Joi = require("joi");
 
 const validateVerify = (req, res, next) => {
-  const { error } = userValidate(req.body);
+  const { error } = emailValidate(req.body);
   if (error) {
     const fieldWithError = error.details[0].path[0];
     const errorType = error.details[0].type;
 
     switch (errorType) {
-      case "string.min":
-        next(res.status(400).json({ messege: `${fieldWithError} must be at least 6 characters` }));
-        break;
       case "any.required":
         next(res.status(400).json({ messege: `missing required ${fieldWithError} field` }));
         break;
+      case "string.min":
+        next(res.status(400).json({ messege: `${fieldWithError} must be at least 3 characters` }));
+        break;
       case "string.pattern.base":
-        if (fieldWithError === "password") {
-          next(res.status(400).json({ messege: `Password must include at least one capital letter and one digit` }));
-          break;
-        }
         next(res.status(400).json({ messege: `please enter a valid ${fieldWithError}` }));
         break;
       case "object.unknown":
@@ -34,7 +30,7 @@ const validateVerify = (req, res, next) => {
   next();
 };
 
-const userValidate = (data) => {
+const emailValidate = (data) => {
   const schema = Joi.object({
     email: Joi.string()
       .min(6)

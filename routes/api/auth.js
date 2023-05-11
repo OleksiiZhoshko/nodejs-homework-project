@@ -13,7 +13,6 @@ const updateAvatar = require("../../controlers/auth/updateAvatar");
 const verifyEmail = require("../../controlers/auth/verifyEmail");
 const resetVerifyMail = require("../../controlers/auth/resetVerifyMail")
 
-
 router.post("/register", validateUserData, asyncWrapper(createUser));
 
 router.get("/verify/:verificationToken", asyncWrapper(verifyEmail));

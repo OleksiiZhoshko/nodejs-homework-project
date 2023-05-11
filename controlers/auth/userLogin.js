@@ -18,7 +18,7 @@ const userLogin = async (req, res) => {
 		throw res.status(401).json({ message: "Email or password is wrong" });
 	}
 	if (!User.verify) {
-		throw res.status(400).json({ message:"Verification has already been passed" });
+		throw res.status(400).json({ message:"Email is not verified" });
 	}
 
 	const payload = { id: registeredUser._id };

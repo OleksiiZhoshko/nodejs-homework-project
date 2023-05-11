@@ -4,12 +4,13 @@ const gravatar = require("gravatar");
 const { nanoid } = require("nanoid")
 const sendMeil = require("../../helpers/sendEmail")
 const { BASE_URL } = process.env
+require("dotenv").config();
 
 const createUser = async (req, res) => {
 	const { email, password } = req.body;
 	const registeredUser = await User.findOne({ email });
 	if (registeredUser) {
-		throw res.status(409).json({ message: "Email in use" });
+		return res.status(409).json({ message: "Email in use" });
 	}
 	const avatarURL = gravatar.url(req.body.email);
 	const hashPassword = await bcrypt.hash(password, 10);
@@ -18,10 +19,11 @@ const createUser = async (req, res) => {
 	const veryfiEmail = {
 		to: email,
 		subject: "Verify mail",
-		html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}>Click verify mail</a>`,
+		text: "Your Contacts verification link",
+		html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}>Click verify mail</a>`		
 	}
 
-	await sendMeil(veryfiEmail);
+	sendMeil(veryfiEmail);
 
 	res.status(201).json({
 		user: {
