@@ -2,7 +2,7 @@ const User = require("../../database/schemaModelUsers");
 
 const verifyEmail = async (req, res) => {
     const { verificationToken } = req.params;
-    const user = await User.findOne(verificationToken);
+    const user = await User.findOne({ verificationToken });
     if (!user) {
         return res.status(404).json({ message:"User not found" })
     }
